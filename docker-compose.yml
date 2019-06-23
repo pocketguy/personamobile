@@ -20,9 +20,9 @@ services:
   web:
     image: nginx:1.17.0-alpine
     labels:
-#      - traefik.protocol=https
-#      - traefik.port=443
       - traefik.frontend.entryPoints=https
-      - traefik.frontend.rule=Host:www.personamobile.ru
+      - traefik.frontend.rule=Host:www.personamobile.ru,personamobile.ru
+      - traefik.frontend.redirect.regex=^https?://personamobile.ru/(.*)
+      - traefik.frontend.redirect.replacement=https://www.personamobile.ru/$${1}
     volumes:
       - ./index.html:/usr/share/nginx/html/index.html:ro
