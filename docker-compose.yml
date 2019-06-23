@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  traefik:
+    image: traefik:v1.7.12-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.toml:/traefik.toml
+      - ./acme.json:/acme.json
+    environment:
+      CF_API_EMAIL: ${CF_API_EMAIL}
+      CF_API_KEY: ${CF_API_KEY}
+    labels:
+      - traefik.frontend.entryPoints=https
+      - traefik.frontend.rule=Host:traefik.personamobile.ru
+  web:
+    image: nginx:1.17.0-alpine
+    labels:
+#      - traefik.protocol=https
+#      - traefik.port=443
+      - traefik.frontend.entryPoints=https
+      - traefik.frontend.rule=Host:www.personamobile.ru
+    volumes:
+      - ./index.html:/usr/share/nginx/html/index.html:ro

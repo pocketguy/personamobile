@@ -1,0 +1,28 @@
+[entryPoints]
+  [entryPoints.http]
+  address = ":80"
+    [entryPoints.http.redirect]
+    entryPoint = "https"
+  [entryPoints.https]
+  address = ":443"
+    [entryPoints.https.tls]
+
+[acme]
+email = "nikita@personamobile.ru"
+storage = "acme.json"
+entryPoint = "https"
+[acme.dnsChallenge]
+  provider = "cloudflare"
+  delayBeforeCheck = 0
+[[acme.domains]]
+  main = "*.personamobile.ru"
+  sans = ["personamobile.ru"]
+
+[api]
+  entryPoint = "traefik"
+  dashboard = true
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "personamobile.ru"
+watch = true
