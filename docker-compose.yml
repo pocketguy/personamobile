@@ -1,28 +1,24 @@
-version: '3'
+version: "3.7"
 
 services:
-  traefik:
-    image: traefik:v1.7.12-alpine
+  api:
+    build: "api"
+    command: "runserver 0.0.0.0:80"
     ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./traefik.toml:/traefik.toml
-      - ./acme.json:/acme.json
-    environment:
-      CF_API_EMAIL: ${CF_API_EMAIL}
-      CF_API_KEY: ${CF_API_KEY}
-    labels:
-      - traefik.frontend.entryPoints=https
-      - traefik.frontend.rule=Host:traefik.personamobile.ru
+      - 8001:80
+
   web:
-    image: nginx:1.17.0-alpine
-    labels:
-      - traefik.frontend.entryPoints=https
-      - traefik.frontend.rule=Host:www.personamobile.ru,personamobile.ru
-      - traefik.frontend.redirect.regex=^https?://personamobile.ru/(.*)
-      - traefik.frontend.redirect.replacement=https://www.personamobile.ru/$${1}
+    build: "web"
+    command: "npm run dev -- -H 0.0.0.0 -p 80"
     volumes:
-      - ./index.html:/usr/share/nginx/html/index.html:ro
+      - ./web/assets:/usr/src/app/assets
+      - ./web/components:/usr/src/app/components
+      - ./web/layouts:/usr/src/app/layouts
+      - ./web/middleware:/usr/src/app/middleware
+      - ./web/pages:/usr/src/app/pages
+      - ./web/plugins:/usr/src/app/plugins
+      - ./web/static:/usr/src/app/static
+      - ./web/store:/usr/src/app/store
+      - ${PWD}/web/nuxt.config.js:/usr/src/app/nuxt.config.js
+    ports:
+      - 8000:80

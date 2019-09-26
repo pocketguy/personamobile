@@ -1,0 +1,5 @@
+**
+!/api/*.py
+!/project/*.py
+!/manage.py
+!/requirements*.txt
