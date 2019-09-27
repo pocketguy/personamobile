@@ -10,7 +10,8 @@ services:
     environment:
       AWS_S3_ENDPOINT_URL: http://127.0.0.1:9000
       AWS_S3_ENDPOINT_URL_PROXY: http://storage:9000
-      SECRET_KEY: "django_secret"
+      SECRET_KEY: django_secret
+      DEBUG: "True"
     ports:
       - 8001:80
 
@@ -32,14 +33,20 @@ services:
 
   db:
     image: postgres:11.5-alpine
+    volumes:
+      - db:/var/lib/postgresql/data
 
   storage:
     image: minio/minio
     command: server /data
     volumes:
-      - /data
+      - storage:/data
     environment:
       MINIO_ACCESS_KEY: access_key
       MINIO_SECRET_KEY: secret_key
     ports:
       - 9000:9000
+
+volumes:
+  db:
+  storage:
