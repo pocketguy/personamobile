@@ -2,17 +2,19 @@ version: "3.7"
 
 services:
   api:
-    build: "api"
-    command: "runserver 0.0.0.0:80"
+    build: api
+    command: runserver 0.0.0.0:80
     volumes:
       - ./api/api:/usr/src/app/api
       - ./api/project:/usr/src/app/project
+    environment:
+      AWS_S3_ENDPOINT_URL: http://storage:9000
     ports:
       - 8001:80
 
   web:
-    build: "web"
-    command: "npm run dev -- -H 0.0.0.0 -p 80"
+    build: web
+    command: npm run dev -- -H 0.0.0.0 -p 80
     volumes:
       - ./web/assets:/usr/src/app/assets
       - ./web/components:/usr/src/app/components
@@ -28,3 +30,14 @@ services:
 
   db:
     image: postgres:11.5-alpine
+
+  storage:
+    image: minio/minio
+    command: server /data
+    volumes:
+      - /data
+    environment:
+      MINIO_ACCESS_KEY: access_key
+      MINIO_SECRET_KEY: secret_key
+    ports:
+      - 9000:9000
