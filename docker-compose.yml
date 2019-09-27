@@ -8,7 +8,9 @@ services:
       - ./api/api:/usr/src/app/api
       - ./api/project:/usr/src/app/project
     environment:
-      AWS_S3_ENDPOINT_URL: http://storage:9000
+      AWS_S3_ENDPOINT_URL: http://127.0.0.1:9000
+      AWS_S3_ENDPOINT_URL_PROXY: http://storage:9000
+      SECRET_KEY: "django_secret"
     ports:
       - 8001:80
 
