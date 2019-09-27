@@ -4,6 +4,9 @@ services:
   api:
     build: "api"
     command: "runserver 0.0.0.0:80"
+    volumes:
+      - ./api/api:/usr/src/app/api
+      - ./api/project:/usr/src/app/project
     ports:
       - 8001:80
 
@@ -22,3 +25,6 @@ services:
       - ${PWD}/web/nuxt.config.js:/usr/src/app/nuxt.config.js
     ports:
       - 8000:80
+
+  db:
+    image: postgres:11.5-alpine
