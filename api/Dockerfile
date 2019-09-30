@@ -9,6 +9,8 @@ RUN echo http://mirror.yandex.ru/mirrors/alpine/v3.10/main > /etc/apk/repositori
   && apk --no-cache add \
     build-base \
     postgresql-dev \
+    zlib-dev \
+    jpeg-dev \
   && pip install --no-cache-dir -r requirements.txt
 
 COPY . .
