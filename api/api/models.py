@@ -20,7 +20,7 @@ class File(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.file.name
+        return self.description
 
     class Meta:
         verbose_name = "файл"
@@ -43,7 +43,7 @@ class Factory(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.slug
+        return self.name
 
     class Meta:
         verbose_name = "фабрика"
