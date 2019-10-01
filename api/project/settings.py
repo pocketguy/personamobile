@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "ckeditor",
+    "ckeditor_uploader",
     "api",
 ]
 
@@ -136,4 +137,39 @@ AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "secret_key")
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "django")
 
 
-CKEDITOR_CONFIGS = {"default": {"removePlugins": "stylesheetparser"}}
+CKEDITOR_CONFIGS = {
+    "default": {
+        "toolbar": "Custom",
+        "toolbar_Custom": [
+            ["Bold", "Italic"],
+            [
+                "NumberedList",
+                "BulletedList",
+                "-",
+                "Outdent",
+                "Indent",
+                # "-",
+                # "JustifyLeft",
+                # "JustifyCenter",
+                # "JustifyRight",
+                # "JustifyBlock",
+            ],
+            ["Blockquote"],
+            ["Link", "Unlink"],
+            # ["imageStyle:full"],
+            # ["Image"],
+            # ["RemoveFormat", "Source"],
+        ],
+        "linkShowAdvancedTab": False,
+        # "extraPlugins": ",".join(["uploadimage"]),
+    }
+}
+CKEDITOR_FILENAME_GENERATOR = "api.models.get_filename"
+CKEDITOR_UPLOAD_PATH = "uploads"
+# CKEDITOR_IMAGE_BACKEND = "pillow"
+CKEDITOR_THUMBNAIL_SIZE = (300, 300)
+CKEDITOR_IMAGE_QUALITY = 40
+CKEDITOR_BROWSE_SHOW_DIRS = True
+
+CKEDITOR_ALLOW_NONIMAGE_FILES = True
+CKEDITOR_RESTRICT_BY_DATE = False

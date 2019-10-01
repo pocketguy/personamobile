@@ -1,17 +1,25 @@
 # import os
 # import uuid
 
-from ckeditor.fields import RichTextField
-from django.core.validators import MaxLengthValidator, MinLengthValidator
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.utils.text import slugify
 
-# def get_upload_to(instance, filename):
-#     ext = filename.split(".")[-1]
-#     name = uuid.uuid4().hex
-#     filename = f"{name}.{ext}"
-#     path = "uploads/"
-#     return os.path.join(path, filename)
+import uuid
+import os
+
+
+def get_filename(filename):
+    ext = filename.split(".")[-1]
+    name = uuid.uuid4().hex
+    filename = f"{name}.{ext}"
+    return filename
+
+
+def get_upload_to(instance, filename):
+    filename = get_filename(filename)
+    path = "uploads/"
+    return os.path.join(path, filename)
 
 
 class File(models.Model):
@@ -73,7 +81,7 @@ class Project(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=255)
     lead = models.TextField()
-    text = RichTextField()
+    text = RichTextUploadingField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     slug = models.SlugField(max_length=255, unique=True, editable=False)
