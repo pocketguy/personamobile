@@ -79,13 +79,16 @@ class Project(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=255)
-    lead = models.TextField()
-    text = RichTextUploadingField()
+    title = models.CharField(max_length=255, verbose_name="заголовок новости")
+    cover = models.ForeignKey(File, on_delete=models.CASCADE, verbose_name="Обложка")
+    lead = models.TextField(
+        verbose_name="Главный абзац",
+        help_text="https://ru.wikipedia.org/wiki/Лид_(журналистика)",
+    )
+    text = RichTextUploadingField(verbose_name="Основной текст")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     slug = models.SlugField(max_length=255, unique=True, editable=False)
-    cover = models.ForeignKey(File, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         if not self.pk:

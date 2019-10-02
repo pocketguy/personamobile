@@ -10,7 +10,10 @@ services:
     environment:
       AWS_S3_ENDPOINT_URL: http://127.0.0.1:9000
       AWS_S3_ENDPOINT_URL_PROXY: http://storage:9000
-      SECRET_KEY: django_secret
+      SECRET_KEY: ${API_SECRET_KEY}
+      DB_PASSWORD: ${DB_PASSWORD}
+      AWS_ACCESS_KEY: ${STORAGE_ACCESS_KEY}
+      AWS_SECRET_KEY: ${STORAGE_SECRET_KEY}
       DEBUG: "True"
     ports:
       - 8001:80
@@ -33,6 +36,8 @@ services:
 
   db:
     image: postgres:11.5-alpine
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db:/var/lib/postgresql/data
 
@@ -42,8 +47,8 @@ services:
     volumes:
       - storage:/data
     environment:
-      MINIO_ACCESS_KEY: access_key
-      MINIO_SECRET_KEY: secret_key
+      MINIO_ACCESS_KEY: ${STORAGE_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${STORAGE_SECRET_KEY}
     ports:
       - 9000:9000
 

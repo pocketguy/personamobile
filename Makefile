@@ -1,3 +1,26 @@
+$(shell touch .env)
+include .env
+export $(shell sed 's/=.*//' .env)
+
+define rand
+$(shell cat /dev/urandom | head -c 24 | base64)
+endef
+
+define DOTNENV_CONTENT =
+API_SECRET_KEY=$(rand)
+DB_PASSWORD=$(rand)
+STORAGE_ACCESS_KEY=$(rand)
+STORAGE_SECRET_KEY=$(rand)
+endef
+
+export DOTNENV_CONTENT
+
+default:
+	@echo "call 'make create_dotenv' to create .env file"
+	@echo "call 'make clean' to fresh install"
+
+create_dotenv:
+	@echo "$$DOTNENV_CONTENT" > .env
 
 docker-down:
 	docker-compose down -v
@@ -20,4 +43,7 @@ createsuperuser:
 collectstatic:
 	docker-compose exec api python manage.py collectstatic --noinput
 
-clean: docker-down docker-up removemigrations makemigrations migrate createsuperuser collectstatic
+add_minio_permissions:
+	@echo "mc config host add minio http://storage:9000 '$$STORAGE_ACCESS_KEY' '$$STORAGE_SECRET_KEY' && mc policy set download minio/django " | docker run -i --rm --entrypoint=/bin/sh --network=personamobile_default minio/mc 
+
+clean: docker-down docker-up removemigrations makemigrations migrate createsuperuser collectstatic add_minio_permissions

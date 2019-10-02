@@ -78,10 +78,11 @@ WSGI_APPLICATION = "project.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.environ.get("DB_NAME", "postgres"),
-        "USER": os.environ.get("DB_USER", "postgres"),
         "HOST": os.environ.get("DB_HOST", "db"),
         "PORT": 5432,
+        "NAME": os.environ.get("DB_NAME", "postgres"),
+        "USER": os.environ.get("DB_USER", "postgres"),
+        "PASSWORD": os.environ.get("DB_PASSWORD", ""),
     }
 }
 
@@ -123,7 +124,7 @@ DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
 
-AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID", "access_key")
+AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY", "access_key")
 AWS_AUTO_CREATE_BUCKET = True
 AWS_BUCKET_ACL = "public-read"
 AWS_DEFAULT_ACL = None  # "public-read"
@@ -133,7 +134,7 @@ AWS_S3_ENDPOINT_URL = os.getenv("AWS_S3_ENDPOINT_URL")
 AWS_S3_ENDPOINT_URL_PROXY = os.getenv("AWS_S3_ENDPOINT_URL_PROXY")
 AWS_S3_FILE_OVERWRITE = False
 AWS_S3_PROXIES = {"http": AWS_S3_ENDPOINT_URL_PROXY}
-AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY", "secret_key")
+AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_KEY", "secret_key")
 AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME", "django")
 
 
