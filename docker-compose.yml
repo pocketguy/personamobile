@@ -1,22 +1,38 @@
 version: "3.7"
 
 services:
+  traefik:
+    image: traefik:v2.0
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/etc/traefik/traefik.yml
+    labels:
+      - "traefik.http.routers.traefik.rule=Host(`traefik.localhost`)"
+      - "traefik.http.routers.traefik.entryPoints=web"
+
   api:
     build: api
-    command: runserver 0.0.0.0:80
     volumes:
       - ./api/api:/usr/src/app/api
       - ./api/project:/usr/src/app/project
     environment:
-      AWS_S3_ENDPOINT_URL: http://127.0.0.1:9000
+      AWS_S3_ENDPOINT_URL: http://storage.localhost
       AWS_S3_ENDPOINT_URL_PROXY: http://storage:9000
       SECRET_KEY: ${API_SECRET_KEY}
       DB_PASSWORD: ${DB_PASSWORD}
       AWS_ACCESS_KEY: ${STORAGE_ACCESS_KEY}
       AWS_SECRET_KEY: ${STORAGE_SECRET_KEY}
       DEBUG: "True"
-    ports:
-      - 8001:80
+    labels:
+      - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.api.rule=Host(`api.localhost`)
+      - traefik.http.routers.api.middlewares=https-redirect
+      - traefik.http.routers.api-tls.rule=Host(`api.localhost`)
+      - traefik.http.routers.api-tls.tls=true
 
   web:
     build: web
@@ -31,8 +47,8 @@ services:
       - ./web/static:/usr/src/app/static
       - ./web/store:/usr/src/app/store
       - ${PWD}/web/nuxt.config.js:/usr/src/app/nuxt.config.js
-    ports:
-      - 8000:80
+    labels:
+      - "traefik.http.routers.web.rule=Host(`web.localhost`)"
 
   db:
     image: postgres:11.5-alpine
@@ -40,6 +56,8 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - db:/var/lib/postgresql/data
+    labels:
+      - "traefik.tcp.routers.mytcprouter.rule=HostSNI(`db.localhost`)"
 
   storage:
     image: minio/minio
@@ -49,8 +67,8 @@ services:
     environment:
       MINIO_ACCESS_KEY: ${STORAGE_ACCESS_KEY}
       MINIO_SECRET_KEY: ${STORAGE_SECRET_KEY}
-    ports:
-      - 9000:9000
+    labels:
+      - "traefik.http.routers.storage.rule=Host(`storage.localhost`)"
 
 volumes:
   db:
