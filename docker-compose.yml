@@ -11,8 +11,8 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./traefik.yml:/etc/traefik/traefik.yml
     labels:
-      - "traefik.http.routers.traefik.rule=Host(`traefik.localhost`)"
-      - "traefik.http.routers.traefik.entryPoints=web"
+      - traefik.http.routers.traefik.rule=Host(`traefik.localhost`)
+      - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
 
   api:
     build: api
@@ -28,7 +28,6 @@ services:
       AWS_SECRET_KEY: ${STORAGE_SECRET_KEY}
       DEBUG: "True"
     labels:
-      - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
       - traefik.http.routers.api.rule=Host(`api.localhost`)
       - traefik.http.routers.api.middlewares=https-redirect
       - traefik.http.routers.api-tls.rule=Host(`api.localhost`)
@@ -48,7 +47,10 @@ services:
       - ./web/store:/usr/src/app/store
       - ${PWD}/web/nuxt.config.js:/usr/src/app/nuxt.config.js
     labels:
-      - "traefik.http.routers.web.rule=Host(`web.localhost`)"
+      - traefik.http.routers.web.rule=Host(`web.localhost`)
+      - traefik.http.routers.web.middlewares=https-redirect
+      - traefik.http.routers.web-tls.rule=Host(`web.localhost`)
+      - traefik.http.routers.web-tls.tls=true
 
   db:
     image: postgres:11.5-alpine
@@ -57,7 +59,7 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     labels:
-      - "traefik.tcp.routers.mytcprouter.rule=HostSNI(`db.localhost`)"
+      - traefik.tcp.routers.db.entryPoints=postgres
 
   storage:
     image: minio/minio
@@ -68,7 +70,10 @@ services:
       MINIO_ACCESS_KEY: ${STORAGE_ACCESS_KEY}
       MINIO_SECRET_KEY: ${STORAGE_SECRET_KEY}
     labels:
-      - "traefik.http.routers.storage.rule=Host(`storage.localhost`)"
+      - traefik.http.routers.storage.rule=Host(`storage.localhost`)
+      - traefik.http.routers.storage.middlewares=https-redirect
+      - traefik.http.routers.storage-tls.rule=Host(`storage.localhost`)
+      - traefik.http.routers.storage-tls.tls=true
 
 volumes:
   db:
