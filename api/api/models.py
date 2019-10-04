@@ -1,12 +1,12 @@
 # import os
 # import uuid
 
+import os
+import uuid
+
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.utils.text import slugify
-
-import uuid
-import os
 
 
 def get_filename(filename):
