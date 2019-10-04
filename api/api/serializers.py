@@ -9,12 +9,13 @@ class FileSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class FactorySerializer(serializers.HyperlinkedModelSerializer):
+    cover = FileSerializer()
+
     class Meta:
         model = Factory
         lookup_field = "slug"
         extra_kwargs = {"url": {"lookup_field": "slug"}}
         fields = [
-            "id",
             "url",
             "name",
             "description",
@@ -26,12 +27,13 @@ class FactorySerializer(serializers.HyperlinkedModelSerializer):
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+    cover = FileSerializer()
+
     class Meta:
         model = Project
         lookup_field = "slug"
         extra_kwargs = {"url": {"lookup_field": "slug"}}
         fields = [
-            "id",
             "url",
             "name",
             "description",
@@ -43,12 +45,13 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PostSerializer(serializers.HyperlinkedModelSerializer):
+    cover = FileSerializer()
+
     class Meta:
         model = Post
         lookup_field = "slug"
         extra_kwargs = {"url": {"lookup_field": "slug"}}
         fields = [
-            "id",
             "url",
             "title",
             "lead",
