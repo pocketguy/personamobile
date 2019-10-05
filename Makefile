@@ -22,6 +22,9 @@ default:
 create_dotenv:
 	@echo "$$DOTNENV_CONTENT" > .env
 
+require_dotenv:
+	test -s .env || { echo ".env not exits; call 'make create_dotenv'"; exit 1;}
+
 docker-down:
 	docker-compose down -v
 
@@ -46,4 +49,5 @@ collectstatic:
 add_minio_permissions:
 	@echo "mc config host add minio http://storage:9000 '$$STORAGE_ACCESS_KEY' '$$STORAGE_SECRET_KEY' && mc policy set download minio/django " | docker run -i --rm --entrypoint=/bin/sh --network=personamobile_default minio/mc 
 
-clean: docker-down docker-up removemigrations makemigrations migrate createsuperuser collectstatic add_minio_permissions
+clean: require_dotenv docker-down docker-up removemigrations makemigrations migrate createsuperuser collectstatic add_minio_permissions
+	@echo "clean done"
