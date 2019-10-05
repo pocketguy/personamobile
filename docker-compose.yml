@@ -17,6 +17,7 @@ services:
 
   api:
     build: api
+    command: python manage.py runserver 0.0.0.0:80
     volumes:
       - ./api/api:/usr/src/app/api
       - ./api/project:/usr/src/app/project

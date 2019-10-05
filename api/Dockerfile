@@ -17,4 +17,4 @@ COPY . .
 
 EXPOSE 80
 
-CMD [ "python", "manage.py", "runserver", "0.0.0.0:80" ]
+CMD [ "gunicorn", "-c", "python:gunicorn_docker_config", "project.wsgi:application" ]

@@ -2,4 +2,5 @@
 !/api/*.py
 !/project/*.py
 !/manage.py
+!/gunicorn_docker_config.py
 !/requirements*.txt
