@@ -23,4 +23,5 @@ urlpatterns = [
     path("ckeditor/", include("ckeditor_uploader.urls")),
     path("admin/", admin.site.urls),
     path("auth/", include("rest_framework.urls")),
+    path("ht/", include("health_check.urls")),
 ]

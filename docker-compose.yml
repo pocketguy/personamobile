@@ -47,7 +47,7 @@ services:
       - ./web/plugins:/usr/src/app/plugins
       - ./web/static:/usr/src/app/static
       - ./web/store:/usr/src/app/store
-      - ${PWD}/web/nuxt.config.js:/usr/src/app/nuxt.config.js
+      - ./web/nuxt.config.js:/usr/src/app/nuxt.config.js
     labels:
       - traefik.http.routers.web.rule=Host(`web.localhost`)
       - traefik.http.routers.web.middlewares=https-redirect

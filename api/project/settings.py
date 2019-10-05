@@ -39,6 +39,12 @@ INSTALLED_APPS = [
     "ckeditor",
     "ckeditor_uploader",
     "rest_framework",
+    "health_check",
+    "health_check.db",
+    "health_check.cache",
+    "health_check.storage",
+    "health_check.contrib.psutil",
+    "health_check.contrib.s3boto3_storage",
     "api",
 ]
 

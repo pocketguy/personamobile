@@ -11,6 +11,7 @@ RUN echo http://mirror.yandex.ru/mirrors/alpine/v3.10/main > /etc/apk/repositori
   postgresql-dev \
   zlib-dev \
   jpeg-dev \
+  linux-headers \
   && pip install --no-cache-dir -r requirements.txt
 
 COPY . .
