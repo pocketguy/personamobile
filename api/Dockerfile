@@ -18,4 +18,7 @@ COPY . .
 
 EXPOSE 80
 
+# HEALTHCHECK --interval=5s --timeout=3s --retries=3 \
+#   CMD curl -f http://localhost/ht/?format=json || exit 1 # requires curl
+
 CMD [ "gunicorn", "-c", "python:gunicorn_docker_config", "project.wsgi:application" ]
