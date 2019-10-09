@@ -9,7 +9,10 @@ class FileSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class FactorySerializer(serializers.HyperlinkedModelSerializer):
-    cover = FileSerializer()
+    cover = FileSerializer(read_only=True)
+    cover_id = serializers.PrimaryKeyRelatedField(
+        queryset=File.objects.all(), source="cover", write_only=True
+    )
 
     class Meta:
         model = Factory
@@ -23,7 +26,9 @@ class FactorySerializer(serializers.HyperlinkedModelSerializer):
             "updated_at",
             "slug",
             "cover",
+            "cover_id",
         ]
+        # depth = 1
 
 
 class ProjectSerializer(serializers.HyperlinkedModelSerializer):
