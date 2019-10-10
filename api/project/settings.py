@@ -126,6 +126,8 @@ USE_TZ = True
 
 STATIC_URL = "/static/"
 
+MEDIA_ROOT = "/media/"
+
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
@@ -164,16 +166,15 @@ CKEDITOR_CONFIGS = {
             ],
             ["Blockquote"],
             ["Link", "Unlink"],
-            # ["imageStyle:full"],
-            # ["Image"],
+            ["imageStyle:full"],
+            ["Image"],
             # ["RemoveFormat", "Source"],
         ],
         "linkShowAdvancedTab": False,
-        # "extraPlugins": ",".join(["uploadimage"]),
+        "extraPlugins": ",".join(["uploadimage"]),
     }
 }
-CKEDITOR_FILENAME_GENERATOR = "api.models.get_filename"
-CKEDITOR_UPLOAD_PATH = "uploads"
+CKEDITOR_UPLOAD_PATH = "media"
 # CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_THUMBNAIL_SIZE = (300, 300)
 CKEDITOR_IMAGE_QUALITY = 40

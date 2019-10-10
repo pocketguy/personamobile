@@ -23,7 +23,7 @@ def get_upload_to(instance, filename):
 
 
 class File(models.Model):
-    file = models.FileField(verbose_name="файл")  # upload_to=get_upload_to
+    file = models.FileField(verbose_name="файл", upload_to="media/")
     description = models.CharField(max_length=255, verbose_name="описание файла")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
