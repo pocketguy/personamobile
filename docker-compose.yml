@@ -53,6 +53,9 @@ services:
       - traefik.http.routers.web.middlewares=https-redirect
       - traefik.http.routers.web-tls.rule=Host(`web.localhost`)
       - traefik.http.routers.web-tls.tls=true
+    environment:
+      AXIOS_BASE_URL: http://api/
+      AXIOS_BROWSER_BASE_URL: https://api.localhost/
 
   db:
     image: postgres:11.5-alpine

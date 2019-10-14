@@ -45,12 +45,14 @@ INSTALLED_APPS = [
     "health_check.storage",
     "health_check.contrib.psutil",
     "health_check.contrib.s3boto3_storage",
+    "corsheaders",
     "api",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -152,13 +154,7 @@ CKEDITOR_CONFIGS = {
         "toolbar": "Custom",
         "toolbar_Custom": [
             ["Bold", "Italic"],
-            [
-                "NumberedList",
-                "BulletedList",
-                "-",
-                "Indent",
-                "Outdent",
-            ],
+            ["NumberedList", "BulletedList", "-", "Indent", "Outdent"],
             ["Blockquote"],
             ["Link", "Unlink"],
             ["Image"],
@@ -166,9 +162,7 @@ CKEDITOR_CONFIGS = {
         "linkShowAdvancedTab": False,
         "extraPlugins": ",".join(["uploadimage"]),
         # "extra_plugins": ["personamobile"],
-        "external_plugin_resources": [
-            ("personamobile", "", "personamobile.js")
-        ],
+        "external_plugin_resources": [("personamobile", "", "personamobile.js")],
     }
 }
 CKEDITOR_UPLOAD_PATH = "media"
@@ -179,3 +173,8 @@ CKEDITOR_BROWSE_SHOW_DIRS = True
 
 CKEDITOR_ALLOW_NONIMAGE_FILES = True
 CKEDITOR_RESTRICT_BY_DATE = False
+
+if DEBUG:
+    CORS_ORIGIN_ALLOW_ALL = True
+else:
+    CORS_ORIGIN_WHITELIST = ["https://personamobile.com"]

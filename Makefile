@@ -10,3 +10,6 @@ clean:
 
 test:
 	./scripts/test.sh
+
+up:
+	docker-compose up --build -d
