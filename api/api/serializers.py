@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import File, Factory, Project, Post
+from django.db.utils import IntegrityError
 
 
 class FileSerializer(serializers.HyperlinkedModelSerializer):
@@ -8,7 +9,17 @@ class FileSerializer(serializers.HyperlinkedModelSerializer):
         fields = ["id", "url", "file", "description", "created_at", "updated_at"]
 
 
-class FactorySerializer(serializers.HyperlinkedModelSerializer):
+class AutoSlugFieldModelSerializer(serializers.HyperlinkedModelSerializer):
+    def create(self, *args, **kwargs):
+        try:
+            return super().create(*args, **kwargs)
+        except IntegrityError as e:
+            raise serializers.ValidationError(
+                "object with this slug already exists"
+            ) from e
+
+
+class FactorySerializer(AutoSlugFieldModelSerializer):
     cover = FileSerializer(read_only=True)
     cover_id = serializers.PrimaryKeyRelatedField(
         queryset=File.objects.all(), source="cover", write_only=True
@@ -28,10 +39,9 @@ class FactorySerializer(serializers.HyperlinkedModelSerializer):
             "cover",
             "cover_id",
         ]
-        # depth = 1
 
 
-class ProjectSerializer(serializers.HyperlinkedModelSerializer):
+class ProjectSerializer(AutoSlugFieldModelSerializer):
     cover = FileSerializer()
 
     class Meta:
@@ -49,7 +59,7 @@ class ProjectSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
-class PostSerializer(serializers.HyperlinkedModelSerializer):
+class PostSerializer(AutoSlugFieldModelSerializer):
     cover = FileSerializer()
 
     class Meta:
@@ -59,8 +69,9 @@ class PostSerializer(serializers.HyperlinkedModelSerializer):
         fields = [
             "url",
             "title",
-            "lead",
             "text",
+            "seo_title",
+            "seo_description",
             "created_at",
             "updated_at",
             "slug",

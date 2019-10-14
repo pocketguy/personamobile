@@ -156,22 +156,19 @@ CKEDITOR_CONFIGS = {
                 "NumberedList",
                 "BulletedList",
                 "-",
-                "Outdent",
                 "Indent",
-                # "-",
-                # "JustifyLeft",
-                # "JustifyCenter",
-                # "JustifyRight",
-                # "JustifyBlock",
+                "Outdent",
             ],
             ["Blockquote"],
             ["Link", "Unlink"],
-            ["imageStyle:full"],
             ["Image"],
-            # ["RemoveFormat", "Source"],
         ],
         "linkShowAdvancedTab": False,
         "extraPlugins": ",".join(["uploadimage"]),
+        # "extra_plugins": ["personamobile"],
+        "external_plugin_resources": [
+            ("personamobile", "", "personamobile.js")
+        ],
     }
 }
 CKEDITOR_UPLOAD_PATH = "media"
