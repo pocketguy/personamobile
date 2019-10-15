@@ -1,22 +1,32 @@
 <template>
   <ul>
-    <li v-if="prevPage !== null">
+    <li v-if="showLeftArrow">
       <nuxt-link
         :to="{
           name: routeName,
-          params: { page: prevPage }
+          params: { page: 1 }
         }"
-        >{{ prevPage }}</nuxt-link
+        >Первая страница</nuxt-link
       >
     </li>
-    <li>{{ currentPage }}</li>
-    <li v-if="nextPage !== null">
+    <li v-for="page of pagesRangeWithinWidth" :key="page">
+      <nuxt-link
+        v-if="page !== currentPage"
+        :to="{
+          name: routeName,
+          params: { page: page }
+        }"
+        >{{ page }}</nuxt-link
+      >
+      <div v-else>{{ page }}</div>
+    </li>
+    <li v-if="showRightArrow">
       <nuxt-link
         :to="{
           name: routeName,
-          params: { page: nextPage }
+          params: { page: totalPages }
         }"
-        >{{ nextPage }}</nuxt-link
+        >Последняя страница</nuxt-link
       >
     </li>
   </ul>
@@ -28,7 +38,7 @@ export default {
   props: {
     currentPage: {
       required: true,
-      validator: validateNumberOrNull
+      validator: Number
     },
     prevPage: {
       required: true,
@@ -40,11 +50,29 @@ export default {
     },
     totalPages: {
       required: true,
-      validator: validateNumberOrNull
+      validator: Number
     },
     routeName: {
       required: true,
       type: String
+    },
+    width: {
+      required: true,
+      type: Number,
+      default: 4
+    }
+  },
+  computed: {
+    showLeftArrow() {
+      return this.currentPage > this.width
+    },
+    showRightArrow() {
+      return this.currentPage < this.totalPages - this.width
+    },
+    pagesRangeWithinWidth() {
+      const left = Math.max(1, this.currentPage - this.width)
+      const right = Math.min(this.totalPages, this.currentPage + this.width)
+      return [...Array(right - left + 1).keys()].map((e) => e + left)
     }
   }
 }
