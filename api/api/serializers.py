@@ -42,7 +42,10 @@ class FactorySerializer(AutoSlugFieldModelSerializer):
 
 
 class ProjectSerializer(AutoSlugFieldModelSerializer):
-    cover = FileSerializer()
+    cover = FileSerializer(read_only=True)
+    cover_id = serializers.PrimaryKeyRelatedField(
+        queryset=File.objects.all(), source="cover", write_only=True
+    )
 
     class Meta:
         model = Project
@@ -56,11 +59,15 @@ class ProjectSerializer(AutoSlugFieldModelSerializer):
             "updated_at",
             "slug",
             "cover",
+            "cover_id",
         ]
 
 
 class PostSerializer(AutoSlugFieldModelSerializer):
-    cover = FileSerializer()
+    cover = FileSerializer(read_only=True)
+    cover_id = serializers.PrimaryKeyRelatedField(
+        queryset=File.objects.all(), source="cover", write_only=True
+    )
 
     class Meta:
         model = Post
@@ -70,10 +77,12 @@ class PostSerializer(AutoSlugFieldModelSerializer):
             "url",
             "title",
             "text",
+            "published_at",
             "seo_title",
             "seo_description",
             "created_at",
             "updated_at",
             "slug",
             "cover",
+            "cover_id",
         ]
