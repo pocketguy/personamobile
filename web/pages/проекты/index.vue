@@ -21,7 +21,7 @@ export default {
     }
   },
   async asyncData({ $axios }) {
-    const projectsPage = await $axios.$get('/projects/')
+    const projectsPage = await $axios.$get('/projects/?page_size=999')
     projectsPage.projects = projectsPage.results
     return projectsPage
   },

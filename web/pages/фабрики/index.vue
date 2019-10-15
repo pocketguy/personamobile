@@ -21,7 +21,7 @@ export default {
     }
   },
   async asyncData({ $axios }) {
-    const factoriesPage = await $axios.$get('/factories/')
+    const factoriesPage = await $axios.$get('/factories/?page_size=999')
     factoriesPage.factories = factoriesPage.results
     return factoriesPage
   },
