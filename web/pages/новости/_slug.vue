@@ -13,6 +13,12 @@ export default {
   components: {
     PDynamicHtml
   },
+  computed: {
+    firstParagraph() {
+      const a = this.post.text.match(/<p>(.*?)<\/p>/)
+      return a[1]
+    }
+  },
   async asyncData({ $axios, route }) {
     const slug = encodeURIComponent(route.params.slug)
     const post = await $axios.$get(`/posts/${slug}/`)
@@ -28,7 +34,7 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: this.post.seo_description
+          content: this.post.seo_description || this.firstParagraph
         }
       ]
     }
