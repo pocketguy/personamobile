@@ -71,8 +71,6 @@ export default {
         const { data } = await axios.get(`${process.env.AXIOS_BASE_URL}${k}/`)
         data.forEach((e) => {
           result.push({
-            changefreq: 'daily',
-            priority: 1,
             url: `/${v}/${e.slug}`,
             lastmod: e.updated_at
           })
