@@ -60,24 +60,50 @@ export default {
   sitemap: {
     routes: async () => {
       const mapping = {
-        factories: 'фабрики',
-        posts: 'новости',
-        projects: 'проекты'
+        factories: {
+          urlPart: 'фабрики',
+          paginate: false
+        },
+        posts: {
+          urlPart: 'новости',
+          paginate: true
+        },
+        projects: {
+          urlPart: 'проекты',
+          paginate: false
+        }
       }
 
       const result = []
+
       for (const k in mapping) {
-        const v = mapping[k]
-        const { data } = await axios.get(
-          `${process.env.AXIOS_BASE_URL}${k}/?page_size=999999`
-        )
+        const urlPart = mapping[k].urlPart
+        const paginate = mapping[k].paginate
+
+        let url = null
+
+        if (paginate) {
+          url = `${process.env.AXIOS_BASE_URL}${k}`
+        } else {
+          url = `${process.env.AXIOS_BASE_URL}${k}/?page_size=999999`
+        }
+
+        const { data } = await axios.get(url)
+
         data.results.forEach((e) => {
           result.push({
-            url: `/${v}/${e.slug}`,
+            url: `/${urlPart}/${e.slug}`,
             lastmod: e.updated_at
           })
         })
+
+        if (paginate) {
+          for (let i = 1; i <= data.total_pages; i++) {
+            result.push(`/${urlPart}/страница/${i}`)
+          }
+        }
       }
+
       return result
     }
   },
