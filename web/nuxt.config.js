@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 export default {
   mode: 'universal',
   /*
@@ -44,7 +46,8 @@ export default {
    */
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    '@nuxtjs/sitemap'
   ],
   /*
    ** Axios module configuration
@@ -53,6 +56,30 @@ export default {
   axios: {
     baseURL: process.env.AXIOS_BASE_URL,
     browserBaseURL: process.env.AXIOS_BROWSER_BASE_URL
+  },
+  sitemap: {
+    routes: async () => {
+      const mapping = {
+        factories: 'фабрики',
+        posts: 'новости',
+        projects: 'проекты'
+      }
+
+      const result = []
+      for (const k in mapping) {
+        const v = mapping[k]
+        const { data } = await axios.get(`${process.env.AXIOS_BASE_URL}${k}/`)
+        data.forEach((e) => {
+          result.push({
+            changefreq: 'daily',
+            priority: 1,
+            url: `/${v}/${e.slug}`,
+            lastmod: e.updated_at
+          })
+        })
+      }
+      return result
+    }
   },
   /*
    ** Build configuration
