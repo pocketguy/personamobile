@@ -178,3 +178,9 @@ if DEBUG:
     CORS_ORIGIN_ALLOW_ALL = True
 else:
     CORS_ORIGIN_WHITELIST = ["https://personamobile.com"]
+
+
+REST_FRAMEWORK = {
+    "DEFAULT_PAGINATION_CLASS": "api.pagination.CustomPagination",
+    "PAGE_SIZE": 10,
+}

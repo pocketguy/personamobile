@@ -68,8 +68,10 @@ export default {
       const result = []
       for (const k in mapping) {
         const v = mapping[k]
-        const { data } = await axios.get(`${process.env.AXIOS_BASE_URL}${k}/`)
-        data.forEach((e) => {
+        const { data } = await axios.get(
+          `${process.env.AXIOS_BASE_URL}${k}/?page_size=999999`
+        )
+        data.results.forEach((e) => {
           result.push({
             url: `/${v}/${e.slug}`,
             lastmod: e.updated_at
