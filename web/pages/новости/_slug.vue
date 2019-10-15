@@ -3,7 +3,7 @@
     <h1>{{ post.title }}</h1>
     <p><img :src="post.cover.file" :alt="post.cover.description" /></p>
     <p-dynamic-html :content="post.text"></p-dynamic-html>
-    <pre><code>{{ post }}</code></pre>
+    <!-- <pre><code>{{ post }}</code></pre> -->
   </div>
 </template>
 
