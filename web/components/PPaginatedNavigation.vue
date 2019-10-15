@@ -33,20 +33,11 @@
 </template>
 
 <script>
-const validateNumberOrNull = (prop) => typeof prop === 'number' || prop === null
 export default {
   props: {
     currentPage: {
       required: true,
       validator: Number
-    },
-    prevPage: {
-      required: true,
-      validator: validateNumberOrNull
-    },
-    nextPage: {
-      required: true,
-      validator: validateNumberOrNull
     },
     totalPages: {
       required: true,
@@ -57,7 +48,6 @@ export default {
       type: String
     },
     width: {
-      required: true,
       type: Number,
       default: 4
     }

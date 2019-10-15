@@ -15,8 +15,6 @@
     </ul>
     <p-paginated-navigation
       :current-page="current_page"
-      :prev-page="previous_page_number"
-      :next-page="next_page_number"
       :total-pages="total_pages"
       :route-name="'новости-страница-page'"
     />
