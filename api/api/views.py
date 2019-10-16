@@ -34,8 +34,11 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
 class PostViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadOnly]
-    queryset = Post.objects.filter(
-        published=True, published_at__gte=now()
-    ).order_by("-published_at")
     serializer_class = PostSerializer
     lookup_field = "slug"
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = Post.objects.filter(
+            published=True, published_at__lt=now()
+        ).order_by("-published_at")
+        return queryset

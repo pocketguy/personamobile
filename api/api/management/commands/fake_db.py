@@ -12,8 +12,9 @@ class Command(BaseCommand):
     help = "Fills database with fake data"
 
     def handle(self, *args, **options):
-        random.seed(42)
         fake = Faker("ru-RU")
+        random.seed(42)
+        fake.seed(42)
 
         Factory.objects.all().delete()
         File.objects.all().delete()
@@ -21,7 +22,7 @@ class Command(BaseCommand):
         Project.objects.all().delete()
 
         files = []
-        for _ in range(10):
+        for _ in range(100):
             img = DjangoFile(gen_image())
             f = File.objects.create(file=img, description=fake.sentence()[:-1])
             files.append(f)
@@ -45,7 +46,7 @@ class Command(BaseCommand):
             projects.append(p)
 
         posts = []
-        for _ in range(random.randrange(30, 100)):
+        for _ in range(random.randrange(30, 300)):
             text = ""
             text += f"<p>{fake.paragraph()}</p>"
             text += "<ul>"
@@ -75,6 +76,7 @@ class Command(BaseCommand):
                 title=fake.sentence()[:-1],
                 text=text,
                 cover=random.choice(files),
+                published=True,
                 seo_title=seo_title,
                 seo_description=seo_description,
             )

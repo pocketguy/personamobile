@@ -83,7 +83,7 @@ class Project(models.Model):
 
 
 class Post(models.Model):
-    title = models.CharField(max_length=255, verbose_name="Заголовок", blank=True)
+    title = models.CharField(max_length=255, verbose_name="Заголовок")
     text = RichTextUploadingField(verbose_name="Основной текст")
     cover = models.ForeignKey(File, on_delete=models.CASCADE, verbose_name="Обложка")
     published = models.BooleanField(
@@ -98,7 +98,7 @@ class Post(models.Model):
     seo_title = models.CharField(
         max_length=255, verbose_name="(SEO) Заголовок", blank=True
     )
-    seo_description = models.TextField(verbose_name="(SEO) Описание")
+    seo_description = models.TextField(verbose_name="(SEO) Описание", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     slug = models.SlugField(max_length=255, unique=True, editable=False)
