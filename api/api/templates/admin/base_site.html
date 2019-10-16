@@ -1,0 +1,11 @@
+{% extends 'admin/base_site.html' %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">Persona Mobile - админка</a></h1>
+{% endblock %}
+
+{% block userlinks %}
+<a href="{% url 'api-root' %}">Открыть API</a> /
+
+{{ block.super }}
+{% endblock %}
