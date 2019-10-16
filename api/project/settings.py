@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "api",
     "ckeditor",
     "ckeditor_uploader",
     "rest_framework",
@@ -46,7 +47,6 @@ INSTALLED_APPS = [
     "health_check.contrib.psutil",
     "health_check.contrib.s3boto3_storage",
     "corsheaders",
-    "api",
 ]
 
 MIDDLEWARE = [
@@ -174,10 +174,13 @@ CKEDITOR_BROWSE_SHOW_DIRS = True
 CKEDITOR_ALLOW_NONIMAGE_FILES = True
 CKEDITOR_RESTRICT_BY_DATE = False
 
+
+SITE_URL = os.getenv("SITE_URL")
+
 if DEBUG:
     CORS_ORIGIN_ALLOW_ALL = True
 else:
-    CORS_ORIGIN_WHITELIST = ["https://personamobile.com"]
+    CORS_ORIGIN_WHITELIST = [SITE_URL]
 
 
 REST_FRAMEWORK = {

@@ -29,6 +29,7 @@ services:
       AWS_ACCESS_KEY: ${STORAGE_ACCESS_KEY}
       AWS_SECRET_KEY: ${STORAGE_SECRET_KEY}
       DEBUG: "True"
+      SITE_URL: https://web.localhost/
     labels:
       - traefik.http.routers.api.rule=Host(`api.localhost`)
       - traefik.http.routers.api.middlewares=https-redirect

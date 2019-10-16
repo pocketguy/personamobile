@@ -1,0 +1,17 @@
+{% extends "rest_framework/base.html" %}
+
+{% block branding %}
+<a class='navbar-brand' href='/'>
+    Persona Mobile
+</a>
+{% endblock %}
+
+{% block userlinks %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'admin:index' %}">Открыть админку</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="https://www.personamobile.ru">Открыть сайт</a>
+</li>
+{{ block.super }}
+{% endblock %}
