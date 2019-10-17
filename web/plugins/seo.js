@@ -1,6 +1,14 @@
-export default ({ env, route }, inject) => {
+export default ({ req, route }, inject) => {
   inject('seoHead', (title, description, image, imageAlt) => {
-    const url = `${env.baseUrl}${route.fullPath}`
+    let url = null
+    if (process.server) {
+      const proto = req.headers['x-forwarded-proto']
+      const host = req.headers['x-forwarded-host']
+      const port = req.headers['x-forwarded-port']
+      url = `${proto}://${host}:${port}${route.fullPath}`
+    } else {
+      url = window.location.href
+    }
     return {
       title,
       meta: [
