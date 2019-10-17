@@ -13,7 +13,6 @@ services:
       - ./traefik.yml:/etc/traefik/traefik.yml
       - ./acme.json:/acme.json
     labels:
-      - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
       - traefik.http.routers.traefik.rule=Host(`traefik.personamobile.ru`)
       - traefik.http.routers.traefik.middlewares=https-redirect
       - traefik.http.routers.traefik-tls.rule=Host(`traefik.personamobile.ru`)
