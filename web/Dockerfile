@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 80
 
-CMD [ "npm", "run", "build", "&&", "npm", "start", "--", "-H", "0.0.0.0", "-p", "80" ]
+CMD npm run build && npm start -- -H 0.0.0.0 -p 80
