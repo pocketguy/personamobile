@@ -1,11 +1,21 @@
-export default ({ req, route }, inject) => {
+export default ({ req }, inject) => {
   inject('seoHead', (title, description, image, imageAlt) => {
     let url = null
     if (process.server) {
       const proto = req.headers['x-forwarded-proto']
       const host = req.headers['x-forwarded-host']
       const port = req.headers['x-forwarded-port']
-      url = `${proto}://${host}:${port}${route.fullPath}`
+      const path = req.url
+      let maybePort = ''
+      if (
+        !(
+          (proto === 'https' && port === '443') ||
+          (proto === 'http' && port === '80')
+        )
+      ) {
+        maybePort = `:${port}`
+      }
+      url = `${proto}://${host}${maybePort}${path}`
     } else {
       url = window.location.href
     }
