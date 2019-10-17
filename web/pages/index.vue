@@ -1,25 +1,19 @@
 <template>
-  <div>
-    <h1>{{ title }}</h1>
-    <h2><nuxt-link :to="{ name: 'фабрики' }">фабрики</nuxt-link></h2>
-    <h2><nuxt-link :to="{ name: 'проекты' }">проекты</nuxt-link></h2>
-    <h2>
-      <nuxt-link
-        :to="{
-          name: 'новости-страница-page',
-          params: { page: 1 }
-        }"
-        >новости</nuxt-link
-      >
-    </h2>
+  <div class="main">
+    <p-logo class="logo" />
   </div>
 </template>
 
 <script>
+import PLogo from '~/components/PLogo.vue'
 export default {
+  layout: 'empty',
+  components: {
+    PLogo
+  },
   data() {
     return {
-      title: 'Persona Mobile'
+      title: 'Главная Страница'
     }
   },
   head() {
@@ -29,3 +23,18 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.main {
+  height: calc(100vh - 66px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  max-height: 100px;
+  max-width: 100%;
+}
+</style>
