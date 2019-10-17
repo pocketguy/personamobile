@@ -12,12 +12,6 @@ providers:
 api:
   insecure: true
 
-http:
-  middlewares:
-    https-redirect:
-      redirectScheme:
-        scheme: https
-
 certificatesResolvers:
   sample:
     acme:

@@ -13,8 +13,9 @@ services:
       - ./traefik.yml:/etc/traefik/traefik.yml
       - ./acme.json:/acme.json
     labels:
+      - traefik.http.middlewares.https-redirect.redirectScheme.scheme=https
       - traefik.http.routers.traefik.rule=Host(`traefik.personamobile.ru`)
-      - traefik.http.routers.traefik.middlewares=https-redirect@file
+      - traefik.http.routers.traefik.middlewares=https-redirect
       - traefik.http.routers.traefik-tls.rule=Host(`traefik.personamobile.ru`)
       - traefik.http.routers.traefik-tls.tls.certresolver=sample
     environment:
@@ -34,7 +35,7 @@ services:
       SITE_URL: https://www.personamobile.ru/
     labels:
       - traefik.http.routers.api.rule=Host(`api.personamobile.ru`)
-      - traefik.http.routers.api.middlewares=https-redirect@file
+      - traefik.http.routers.api.middlewares=https-redirect
       - traefik.http.routers.api-tls.rule=Host(`api.personamobile.ru`)
       - traefik.http.routers.api-tls.tls.certresolver=sample
 
@@ -42,7 +43,7 @@ services:
     image: pocketguy/personamobile-web:latest
     labels:
       - traefik.http.routers.web.rule=Host(`www.personamobile.ru`)
-      - traefik.http.routers.web.middlewares=https-redirect@file
+      - traefik.http.routers.web.middlewares=https-redirect
       - traefik.http.routers.web-tls.rule=Host(`www.personamobile.ru`)
       - traefik.http.routers.web-tls.tls=true
       - traefik.http.routers.web-tls.tls.certresolver=sample
@@ -69,7 +70,7 @@ services:
       MINIO_SECRET_KEY: ${STORAGE_SECRET_KEY}
     labels:
       - traefik.http.routers.storage.rule=Host(`storage.personamobile.ru`)
-      - traefik.http.routers.storage.middlewares=https-redirect@file
+      - traefik.http.routers.storage.middlewares=https-redirect
       - traefik.http.routers.storage-tls.rule=Host(`storage.personamobile.ru`)
       - traefik.http.routers.storage-tls.tls=true
 
