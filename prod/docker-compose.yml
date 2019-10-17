@@ -13,8 +13,11 @@ services:
       - ./traefik.yml:/etc/traefik/traefik.yml
       - ./acme.json:/acme.json
     labels:
-      - traefik.http.routers.traefik.rule=Host(`traefik.personamobile.ru`)
       - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.traefik.rule=Host(`traefik.personamobile.ru`)
+      - traefik.http.routers.traefik.middlewares=https-redirect
+      - traefik.http.routers.traefik-tls.rule=Host(`traefik.personamobile.ru`)
+      - traefik.http.routers.traefik-tls.certResolver = "sample"
     environment:
       CF_API_EMAIL: ${CF_API_EMAIL}
       CF_API_KEY: ${CF_API_KEY}
@@ -34,7 +37,7 @@ services:
       - traefik.http.routers.api.rule=Host(`api.personamobile.ru`)
       - traefik.http.routers.api.middlewares=https-redirect
       - traefik.http.routers.api-tls.rule=Host(`api.personamobile.ru`)
-      - traefik.http.routers.api-tls.tls=true
+      - traefik.http.routers.api-tls.certResolver = "sample"
 
   web:
     image: pocketguy/personamobile-web:latest
@@ -43,6 +46,7 @@ services:
       - traefik.http.routers.web.middlewares=https-redirect
       - traefik.http.routers.web-tls.rule=Host(`web.personamobile.ru`)
       - traefik.http.routers.web-tls.tls=true
+      - traefik.http.routers.web-tls.certResolver = "sample"
     environment:
       AXIOS_BASE_URL: http://api/
       AXIOS_BROWSER_BASE_URL: https://api.personamobile.ru/
@@ -56,7 +60,6 @@ services:
     labels:
       - traefik.tcp.routers.db.entryPoints=postgres
       - traefik.tcp.routers.db.rule=HostSNI(`*`)
-
   storage:
     image: minio/minio
     command: server /data
