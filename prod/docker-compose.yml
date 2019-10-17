@@ -1,28 +1,76 @@
-version: '3'
+version: "3.7"
 
 services:
   traefik:
-    image: traefik:v1.7.12-alpine
+    image: traefik:v2.0
     ports:
-      - "80:80"
-      - "443:443"
-      - "8080:8080"
+      - 80:80
+      - 443:443
+      - 8080:8080
+      - 5432:5432
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./traefik.toml:/traefik.toml
+      - ./traefik.yml:/etc/traefik/traefik.yml
       - ./acme.json:/acme.json
+    labels:
+      - traefik.http.routers.traefik.rule=Host(`traefik.personamobile.ru`)
+      - traefik.http.middlewares.https-redirect.redirectscheme.scheme=https
     environment:
       CF_API_EMAIL: ${CF_API_EMAIL}
       CF_API_KEY: ${CF_API_KEY}
+
+  api:
+    image: pocketguy/personamobile-api:latest
+    environment:
+      AWS_S3_ENDPOINT_URL: http://storage.personamobile.ru
+      AWS_S3_ENDPOINT_URL_PROXY: https://storage.personamobile.ru
+      SECRET_KEY: ${API_SECRET_KEY}
+      DB_PASSWORD: ${DB_PASSWORD}
+      AWS_ACCESS_KEY: ${STORAGE_ACCESS_KEY}
+      AWS_SECRET_KEY: ${STORAGE_SECRET_KEY}
+      DEBUG: "False"
+      SITE_URL: https://web.personamobile.ru/
     labels:
-      - traefik.frontend.entryPoints=https
-      - traefik.frontend.rule=Host:traefik.personamobile.ru
+      - traefik.http.routers.api.rule=Host(`api.personamobile.ru`)
+      - traefik.http.routers.api.middlewares=https-redirect
+      - traefik.http.routers.api-tls.rule=Host(`api.personamobile.ru`)
+      - traefik.http.routers.api-tls.tls=true
+
   web:
-    image: nginx:1.17.0-alpine
+    image: pocketguy/personamobile-web:latest
     labels:
-      - traefik.frontend.entryPoints=https
-      - traefik.frontend.rule=Host:www.personamobile.ru,personamobile.ru
-      - traefik.frontend.redirect.regex=^https?://personamobile.ru/(.*)
-      - traefik.frontend.redirect.replacement=https://www.personamobile.ru/$${1}
+      - traefik.http.routers.web.rule=Host(`web.personamobile.ru`)
+      - traefik.http.routers.web.middlewares=https-redirect
+      - traefik.http.routers.web-tls.rule=Host(`web.personamobile.ru`)
+      - traefik.http.routers.web-tls.tls=true
+    environment:
+      AXIOS_BASE_URL: http://api/
+      AXIOS_BROWSER_BASE_URL: https://api.personamobile.ru/
+
+  db:
+    image: postgres:11.5-alpine
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - ./index.html:/usr/share/nginx/html/index.html:ro
+      - db:/var/lib/postgresql/data
+    labels:
+      - traefik.tcp.routers.db.entryPoints=postgres
+      - traefik.tcp.routers.db.rule=HostSNI(`*`)
+
+  storage:
+    image: minio/minio
+    command: server /data
+    volumes:
+      - storage:/data
+    environment:
+      MINIO_ACCESS_KEY: ${STORAGE_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${STORAGE_SECRET_KEY}
+    labels:
+      - traefik.http.routers.storage.rule=Host(`storage.personamobile.ru`)
+      - traefik.http.routers.storage.middlewares=https-redirect
+      - traefik.http.routers.storage-tls.rule=Host(`storage.personamobile.ru`)
+      - traefik.http.routers.storage-tls.tls=true
+
+volumes:
+  db:
+  storage:
