@@ -17,6 +17,18 @@ export default {
     firstParagraph() {
       const a = this.post.text.match(/<p>(.*?)<\/p>/)
       return a[1]
+    },
+    seoTitle() {
+      return this.post.seo_title || this.post.title
+    },
+    seoDescription() {
+      return this.post.seo_description || this.firstParagraph
+    },
+    seoImage() {
+      return this.post.cover.file
+    },
+    seoImageAlt() {
+      return this.post.cover.description
     }
   },
   async asyncData({ $axios, route }) {
@@ -27,17 +39,12 @@ export default {
     }
   },
   head() {
-    return {
-      title: this.post.seo_title || this.post.title,
-      meta: [
-        // hid is used as unique identifier. Do not use `vmid` for it as it will not work
-        {
-          hid: 'description',
-          name: 'description',
-          content: this.post.seo_description || this.firstParagraph
-        }
-      ]
-    }
+    return this.$seoHead(
+      this.seoTitle,
+      this.seoDescription,
+      this.seoImage,
+      this.seoImageAlt
+    )
   }
 }
 </script>

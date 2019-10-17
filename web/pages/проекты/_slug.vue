@@ -9,6 +9,20 @@
 
 <script>
 export default {
+  computed: {
+    seoTitle() {
+      return this.project.name
+    },
+    seoDescription() {
+      return this.project.description
+    },
+    seoImage() {
+      return this.project.cover.file
+    },
+    seoImageAlt() {
+      return this.project.cover.description
+    }
+  },
   async asyncData({ $axios, route }) {
     const slug = encodeURIComponent(route.params.slug)
     const project = await $axios.$get(`/projects/${slug}/`)
@@ -17,16 +31,12 @@ export default {
     }
   },
   head() {
-    return {
-      title: this.project.name,
-      meta: [
-        {
-          hid: 'description',
-          name: 'description',
-          content: this.project.description
-        }
-      ]
-    }
+    return this.$seoHead(
+      this.seoTitle,
+      this.seoDescription,
+      this.seoImage,
+      this.seoImageAlt
+    )
   }
 }
 </script>
