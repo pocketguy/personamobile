@@ -58,7 +58,7 @@ services:
       - traefik.http.routers.web-tls.tls.certresolver=sample
     environment:
       API_URL: http://backend/
-      API_URL_BROWSERL: https://api.personamobile.ru/
+      API_URL_BROWSER: https://api.personamobile.ru/
 
   db:
     image: postgres:11.5-alpine
