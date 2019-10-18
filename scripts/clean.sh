@@ -13,7 +13,6 @@ fi
 
 docker-compose down -v
 docker-compose up --build -d
-docker-compose run --rm backend find api/migrations -name "0???_*.py" -exec rm -f {} \;
 docker-compose run --rm backend ./manage.py makemigrations
 docker-compose run --rm backend ./manage.py migrate
 docker-compose run --rm backend ./manage.py fake_db
