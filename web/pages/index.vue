@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <p-logo class="logo" />
+    <h1><p-logo class="logo" /></h1>
   </div>
 </template>
 
@@ -34,7 +34,7 @@ export default {
 }
 
 .logo {
-  max-height: 100px;
+  height: 100px;
   max-width: 100%;
 }
 </style>
