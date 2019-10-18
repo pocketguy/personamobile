@@ -36,7 +36,7 @@ services:
       AWS_ACCESS_KEY: ${STORAGE_ACCESS_KEY}
       AWS_SECRET_KEY: ${STORAGE_SECRET_KEY}
       DEBUG: "False"
-      SITE_URL: https://www.personamobile.ru/
+      SITE_URL: https://www.personamobile.ru
     labels:
       - traefik.http.routers.backend.rule=Host(`api.personamobile.ru`)
       - traefik.http.routers.backend.middlewares=https-redirect
