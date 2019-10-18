@@ -53,10 +53,7 @@ export default {
    ** Axios module configuration
    ** See https://axios.nuxtjs.org/options
    */
-  axios: {
-    baseURL: process.env.AXIOS_BASE_URL,
-    browserBaseURL: process.env.AXIOS_BROWSER_BASE_URL
-  },
+  axios: {},
   sitemap: {
     routes: async () => {
       const mapping = {

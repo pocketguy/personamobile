@@ -67,8 +67,8 @@ services:
       - traefik.http.routers.web-tls.tls=true
       - traefik.http.routers.web-tls.entrypoints=web-secure
     environment:
-      AXIOS_BASE_URL: http://backend/
-      AXIOS_BROWSER_BASE_URL: https://api.localhost/
+      API_URL: http://backend/
+      API_URL_BROWSER: https://api.localhost/
 
   db:
     image: postgres:11.5-alpine
