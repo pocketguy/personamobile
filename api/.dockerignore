@@ -1,4 +1,5 @@
 **
+!/api/**/*.html
 !/api/**/*.py
 !/project/**/*.py
 !/manage.py
