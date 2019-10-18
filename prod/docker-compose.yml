@@ -49,16 +49,28 @@ services:
   web:
     image: pocketguy/personamobile-web:latest
     labels:
+      # middlewares
+      - traefik.http.middlewares.https-www-redirect.redirectregex.regex=^https?://personamobile.ru/(.*)
+      - traefik.http.middlewares.https-www-redirect.redirectregex.replacement=https://www.personamobile.ru/$${1}
+      # non www, non https
+      - traefik.http.routers.web-non-www.rule=Host(`personamobile.ru`)
+      - traefik.http.routers.web-non-www.middlewares=https-www-redirect
+      - traefik.http.routers.web-non-www.entrypoints=web
+      # non www, https
+      - traefik.http.routers.web-non-www-tls.rule=Host(`personamobile.ru`)
+      - traefik.http.routers.web-non-www-tls.middlewares=https-www-redirect
+      - traefik.http.routers.web-non-www-tls.tls=true
+      - traefik.http.routers.web-non-www-tls.entrypoints=web-secure
+      - traefik.http.routers.web-non-www-tls.tls.certresolver=sample
+      # www, non https
       - traefik.http.routers.web.rule=Host(`www.personamobile.ru`)
       - traefik.http.routers.web.middlewares=https-redirect
       - traefik.http.routers.web.entrypoints=web
+      # www, https
       - traefik.http.routers.web-tls.rule=Host(`www.personamobile.ru`)
       - traefik.http.routers.web-tls.tls=true
       - traefik.http.routers.web-tls.entrypoints=web-secure
       - traefik.http.routers.web-tls.tls.certresolver=sample
-    environment:
-      API_URL: http://backend/
-      API_URL_BROWSER: https://api.personamobile.ru/
 
   db:
     image: postgres:11.5-alpine

@@ -80,9 +80,9 @@ export default {
         let url = null
 
         if (paginate) {
-          url = `${process.env.AXIOS_BASE_URL}${k}`
+          url = `${process.env.API_URL}${k}`
         } else {
-          url = `${process.env.AXIOS_BASE_URL}${k}/?page_size=999999`
+          url = `${process.env.API_URL}${k}/?page_size=999999`
         }
 
         const { data } = await axios.get(url)
