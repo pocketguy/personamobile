@@ -85,7 +85,7 @@ services:
       - traefik.http.routers.storage-tls.rule=Host(`storage.personamobile.ru`)
       - traefik.http.routers.storage-tls.tls=true
       - traefik.http.routers.storage-tls.entrypoints=web-secure
-      - traefik.http.routers.web-tls.tls.domains.sans=*.personamobile.ru
+      - traefik.http.routers.storage-tls.tls.certresolver=sample
 
 volumes:
   db:
