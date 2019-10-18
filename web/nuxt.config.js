@@ -47,7 +47,20 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/sitemap'
+    '@nuxtjs/sitemap',
+    [
+      '@nuxtjs/yandex-metrika',
+      {
+        id: '54034093',
+        webvisor: true
+      }
+    ],
+    [
+      '@nuxtjs/google-analytics',
+      {
+        id: 'UA-141902538-1'
+      }
+    ]
   ],
   /*
    ** Axios module configuration
