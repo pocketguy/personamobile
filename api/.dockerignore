@@ -1,7 +1,6 @@
 **
-!/api/**/*.html
-!/api/**/*.py
-!/project/**/*.py
-!/manage.py
-!/gunicorn_docker_config.py
-!/requirements*.txt
+!/api
+!/project
+!*.py
+!*.txt
+**/__pycache__
