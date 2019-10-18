@@ -56,8 +56,8 @@ services:
       - traefik.http.routers.web-tls.tls=true
       - traefik.http.routers.web-tls.entrypoints=web-secure
       - traefik.http.routers.web-tls.tls.certresolver=sample
-      - traefik.http.routers.web-tls.tls.domains.main=personamobile.ru
-      - traefik.http.routers.web-tls.tls.domains.sans=*.personamobile.ru
+      - traefik.http.routers.web-tls.tls.domains[0].main=personamobile.ru
+      - traefik.http.routers.web-tls.tls.domains[0].sans=*.personamobile.ru
     environment:
       AXIOS_BASE_URL: http://backend/
       AXIOS_BROWSER_BASE_URL: https://api.personamobile.ru/
