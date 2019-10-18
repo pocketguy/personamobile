@@ -3,11 +3,8 @@ entryPoints:
     address: ":80"
   web-secure:
     address: ":443"
-  postgres:
-    address: ":5432"
 
 providers:
   docker: {}
 
-api:
-  insecure: true
+api: {}
